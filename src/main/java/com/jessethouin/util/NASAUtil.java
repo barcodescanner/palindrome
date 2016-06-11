@@ -16,9 +16,9 @@ import java.util.Collections;
  *
  */
 public class NASAUtil {
-	public static SetUniqueList<String> getInventorNames(String nasaPatentsUrl, String nasaPatentsKey, String query, Integer limit) {
+	public static SetUniqueList<String> getInventorNames(String nasaPatentsUrl, String nasaPatentsKey, String search, Integer limit) {
 		SetUniqueList<String> names = SetUniqueList.setUniqueList(new ArrayList<>());
-		ResponseEntity<Patents> nasaResponse = getNasaResponse(nasaPatentsUrl, nasaPatentsKey, query, limit);
+		ResponseEntity<Patents> nasaResponse = getNasaResponse(nasaPatentsUrl, nasaPatentsKey, search, limit);
 		nasaResponse.getBody().getResults().forEach(result -> result.getInnovator().forEach(innovator -> {
 			String concatenatedName = innovator.getFname() + innovator.getLname();
 			concatenatedName = concatenatedName.replaceAll("[^a-zA-Z]", "");
@@ -27,7 +27,7 @@ public class NASAUtil {
 		return names;
 	}
 
-	private static ResponseEntity<Patents> getNasaResponse(String nasaPatentsUrl, String nasaPatentsKey, String query, Integer limit) {
+	private static ResponseEntity<Patents> getNasaResponse(String nasaPatentsUrl, String nasaPatentsKey, String search, Integer limit) {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -36,10 +36,10 @@ public class NASAUtil {
 		};
 
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(nasaPatentsUrl);
-		if (StringUtils.isNotEmpty(query)) {
-			builder = builder.queryParam("query", query);
+		if (StringUtils.isNotEmpty(search)) {
+			builder = builder.queryParam("query", search);
 		}
-		builder = null != limit ? builder.queryParam("limit", limit) : builder.queryParam("limit", 5);
+		builder = null != limit ? builder.queryParam("limit", limit) : builder.queryParam("limit", 1);
 		builder = builder.queryParam("api_key", nasaPatentsKey);
 		String url = builder.toUriString();
 		return restTemplate.exchange(url, HttpMethod.GET, entity, responseType);

@@ -33,7 +33,7 @@ class PalindromeController {
 	private String nasaPatentsKey;
 
 	/**
-	 * @param query The string used to search within patents
+	 * @param search The string used to search within patents
 	 * @param limit The number of patents to return. Note that more than one contributor can be returned for each patent.
 	 * @return ResponseEntity that has the number of possible palindromes based on the inventor's names in the patent search results.
 	 */
@@ -60,15 +60,18 @@ class PalindromeController {
 			}
 	)
 	public ResponseEntity getPalindromesCount(
-			@RequestParam(value = "query", required = false) String query,
+			@RequestParam(value = "search") String search,
 			@RequestParam(value = "limit", required = false) Integer limit) {
-		SetUniqueList<String> names = getNasaNames(query, limit);
+		if (limit > 5) {
+			throw new UnsupportedOperationException("Please limit your patent list to 5. The server is very old and feeble, and may crash if you ask too much.");
+		}
+		SetUniqueList<String> names = getNasaNames(search, limit);
 		SortedMap<String, Integer> palindromes = PalindromeUtil.calculatePalindromes(names);
 		return new ResponseEntity<>(PalindromeUtil.sortByValue(palindromes), HttpStatus.OK);
 	}
 
 	/**
-	 * @param query The string used to search within patents
+	 * @param search The string used to search within patents
 	 * @param limit The number of patents to return. Note that more than one contributor can be returned for each patent.
 	 * @return ResponseEntity that has a list of palindromes based on the inventor's names in the patent search results.
 	 */
@@ -95,17 +98,17 @@ class PalindromeController {
 			}
 	)
 	public ResponseEntity palindromes(
-			@RequestParam(value = "query", required = false) String query,
+			@RequestParam(value = "search") String search,
 			@RequestParam(value = "limit", required = false) Integer limit) {
 		if (limit > 2) {
-			throw new UnsupportedOperationException("Please limit your palindrome list to 2. The server is very old and feeble, and may crash if you ask too much.");
+			throw new UnsupportedOperationException("Please limit your patent list to 2. The server is very old and feeble, and may crash if you ask too much.");
 		}
-		SetUniqueList<String> names = getNasaNames(query, limit);
+		SetUniqueList<String> names = getNasaNames(search, limit);
 		SortedMap<String, List<String>> palindromes = PalindromeUtil.getPalindromes(names);
 		return new ResponseEntity<>(palindromes, HttpStatus.OK);
 	}
 
-	private SetUniqueList<String> getNasaNames(String query, Integer limit) {
-		return NASAUtil.getInventorNames(nasaPatentsUrl, nasaPatentsKey, query, limit);
+	private SetUniqueList<String> getNasaNames(String search, Integer limit) {
+		return NASAUtil.getInventorNames(nasaPatentsUrl, nasaPatentsKey, search, limit);
 	}
 }
