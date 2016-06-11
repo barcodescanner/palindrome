@@ -102,6 +102,7 @@
 					<includeAdditionalProperties>false</includeAdditionalProperties>
 					<includeToString>false</includeToString>
 					<!--<removeOldOutput>true</removeOldOutput>-->
+					<propertyWordDelimiters>_</propertyWordDelimiters>
 				</configuration>
 				<executions>
 					<execution>
