@@ -24,13 +24,10 @@ import java.util.List;
     "title",
     "innovator",
     "contact",
-    "publication",
-    "concepts",
     "serial_number",
-    "_id",
-    "patent_number",
     "id",
-    "trl"
+    "trl",
+    "patent_number"
 })
 public class Result {
 
@@ -54,20 +51,14 @@ public class Result {
     private List<Innovator> innovator = new ArrayList<Innovator>();
     @JsonProperty("contact")
     private Contact contact;
-    @JsonProperty("publication")
-    private List<Publication> publication = new ArrayList<Publication>();
-    @JsonProperty("concepts")
-    private Object concepts;
     @JsonProperty("serial_number")
     private String serialNumber;
-    @JsonProperty("_id")
-    private String _id;
-    @JsonProperty("patent_number")
-    private String patentNumber;
     @JsonProperty("id")
     private String id;
     @JsonProperty("trl")
     private String trl;
+    @JsonProperty("patent_number")
+    private String patentNumber;
 
     /**
      * 
@@ -272,46 +263,6 @@ public class Result {
     /**
      * 
      * @return
-     *     The publication
-     */
-    @JsonProperty("publication")
-    public List<Publication> getPublication() {
-        return publication;
-    }
-
-    /**
-     * 
-     * @param publication
-     *     The publication
-     */
-    @JsonProperty("publication")
-    public void setPublication(List<Publication> publication) {
-        this.publication = publication;
-    }
-
-    /**
-     * 
-     * @return
-     *     The concepts
-     */
-    @JsonProperty("concepts")
-    public Object getConcepts() {
-        return concepts;
-    }
-
-    /**
-     * 
-     * @param concepts
-     *     The concepts
-     */
-    @JsonProperty("concepts")
-    public void setConcepts(Object concepts) {
-        this.concepts = concepts;
-    }
-
-    /**
-     * 
-     * @return
      *     The serialNumber
      */
     @JsonProperty("serial_number")
@@ -327,46 +278,6 @@ public class Result {
     @JsonProperty("serial_number")
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
-    }
-
-    /**
-     * 
-     * @return
-     *     The _id
-     */
-    @JsonProperty("_id")
-    public String get_id() {
-        return _id;
-    }
-
-    /**
-     * 
-     * @param Id
-     *     The _id
-     */
-    @JsonProperty("_id")
-    public void set_id(String Id) {
-        this._id = Id;
-    }
-
-    /**
-     * 
-     * @return
-     *     The patentNumber
-     */
-    @JsonProperty("patent_number")
-    public String getPatentNumber() {
-        return patentNumber;
-    }
-
-    /**
-     * 
-     * @param patentNumber
-     *     The patent_number
-     */
-    @JsonProperty("patent_number")
-    public void setPatentNumber(String patentNumber) {
-        this.patentNumber = patentNumber;
     }
 
     /**
@@ -409,9 +320,29 @@ public class Result {
         this.trl = trl;
     }
 
+    /**
+     * 
+     * @return
+     *     The patentNumber
+     */
+    @JsonProperty("patent_number")
+    public String getPatentNumber() {
+        return patentNumber;
+    }
+
+    /**
+     * 
+     * @param patentNumber
+     *     The patent_number
+     */
+    @JsonProperty("patent_number")
+    public void setPatentNumber(String patentNumber) {
+        this.patentNumber = patentNumber;
+    }
+
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(category).append(clientRecordId).append(center).append(eRelations).append(referenceNumber).append(expirationDate).append(_abstract).append(title).append(innovator).append(contact).append(publication).append(concepts).append(serialNumber).append(_id).append(patentNumber).append(id).append(trl).toHashCode();
+        return new HashCodeBuilder().append(category).append(clientRecordId).append(center).append(eRelations).append(referenceNumber).append(expirationDate).append(_abstract).append(title).append(innovator).append(contact).append(serialNumber).append(id).append(trl).append(patentNumber).toHashCode();
     }
 
     @Override
@@ -423,7 +354,7 @@ public class Result {
             return false;
         }
         Result rhs = ((Result) other);
-        return new EqualsBuilder().append(category, rhs.category).append(clientRecordId, rhs.clientRecordId).append(center, rhs.center).append(eRelations, rhs.eRelations).append(referenceNumber, rhs.referenceNumber).append(expirationDate, rhs.expirationDate).append(_abstract, rhs._abstract).append(title, rhs.title).append(innovator, rhs.innovator).append(contact, rhs.contact).append(publication, rhs.publication).append(concepts, rhs.concepts).append(serialNumber, rhs.serialNumber).append(_id, rhs._id).append(patentNumber, rhs.patentNumber).append(id, rhs.id).append(trl, rhs.trl).isEquals();
+        return new EqualsBuilder().append(category, rhs.category).append(clientRecordId, rhs.clientRecordId).append(center, rhs.center).append(eRelations, rhs.eRelations).append(referenceNumber, rhs.referenceNumber).append(expirationDate, rhs.expirationDate).append(_abstract, rhs._abstract).append(title, rhs.title).append(innovator, rhs.innovator).append(contact, rhs.contact).append(serialNumber, rhs.serialNumber).append(id, rhs.id).append(trl, rhs.trl).append(patentNumber, rhs.patentNumber).isEquals();
     }
 
 }
