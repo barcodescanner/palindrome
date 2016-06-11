@@ -54,7 +54,7 @@ public class PalindromeUtil {
 	 */
 	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
 		Map<K, V> result = new LinkedHashMap<>();
-		map.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
+		map.entrySet().stream().sorted(Map.Entry.comparingByValue(Collections.reverseOrder())).forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
 		return result;
 	}
 

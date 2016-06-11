@@ -37,7 +37,7 @@ class PalindromeController {
 	 * @param limit The number of patents to return. Note that more than one contributor can be returned for each patent.
 	 * @return ResponseEntity that has the number of possible palindromes based on the inventor's names in the patent search results.
 	 */
-	@RequestMapping(value = "/palindromes/count", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/palindromes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(
 			value = "Get NASA patent holders and calculate possible palindromes from their names.",
 			response = ResponseEntity.class
@@ -61,7 +61,7 @@ class PalindromeController {
 	)
 	public ResponseEntity getPalindromesCount(
 			@RequestParam(value = "query", required = false) String query,
-			@RequestParam(value = "limit", required = false) String limit) {
+			@RequestParam(value = "limit", required = false) Integer limit) {
 		SetUniqueList<String> names = getNasaNames(query, limit);
 		SortedMap<String, Integer> palindromes = PalindromeUtil.calculatePalindromes(names);
 		return new ResponseEntity<>(PalindromeUtil.sortByValue(palindromes), HttpStatus.OK);
@@ -72,7 +72,7 @@ class PalindromeController {
 	 * @param limit The number of patents to return. Note that more than one contributor can be returned for each patent.
 	 * @return ResponseEntity that has a list of palindromes based on the inventor's names in the patent search results.
 	 */
-	@RequestMapping(value = "/palindromes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/palindromes/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(
 			value = "Get NASA patent holders and create palindromes from their names.",
 			response = ResponseEntity.class
@@ -96,13 +96,16 @@ class PalindromeController {
 	)
 	public ResponseEntity palindromes(
 			@RequestParam(value = "query", required = false) String query,
-			@RequestParam(value = "limit", required = false) String limit) {
+			@RequestParam(value = "limit", required = false) Integer limit) {
+		if (limit > 2) {
+			throw new UnsupportedOperationException("Please limit your palindrome list to 2. The server is very old and feeble, and may crash if you ask too much.");
+		}
 		SetUniqueList<String> names = getNasaNames(query, limit);
 		SortedMap<String, List<String>> palindromes = PalindromeUtil.getPalindromes(names);
 		return new ResponseEntity<>(palindromes, HttpStatus.OK);
 	}
 
-	private SetUniqueList<String> getNasaNames(String query, String limit) {
+	private SetUniqueList<String> getNasaNames(String query, Integer limit) {
 		return NASAUtil.getInventorNames(nasaPatentsUrl, nasaPatentsKey, query, limit);
 	}
 }
