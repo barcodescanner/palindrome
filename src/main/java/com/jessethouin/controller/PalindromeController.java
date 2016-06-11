@@ -62,8 +62,8 @@ class PalindromeController {
 	public ResponseEntity getPalindromesCount(
 			@RequestParam(value = "search") String search,
 			@RequestParam(value = "limit", required = false) Integer limit) {
-		if (limit > 5) {
-			throw new UnsupportedOperationException("Please limit your patent list to 5. The server is very old and feeble, and may crash if you ask too much.");
+		if (limit < 1 || limit > 5) {
+			throw new UnsupportedOperationException("Please limit your patent list between 1 and 5.");
 		}
 		SetUniqueList<String> names = getNasaNames(search, limit);
 		SortedMap<String, Integer> palindromes = PalindromeUtil.calculatePalindromes(names);
@@ -100,8 +100,8 @@ class PalindromeController {
 	public ResponseEntity palindromes(
 			@RequestParam(value = "search") String search,
 			@RequestParam(value = "limit", required = false) Integer limit) {
-		if (limit > 2) {
-			throw new UnsupportedOperationException("Please limit your patent list to 2. The server is very old and feeble, and may crash if you ask too much.");
+		if (limit < 1 || limit > 2) {
+			throw new UnsupportedOperationException("Please limit your patent list to 1 or 2. The server is very old and feeble, and may crash if you ask too much.");
 		}
 		SetUniqueList<String> names = getNasaNames(search, limit);
 		SortedMap<String, List<String>> palindromes = PalindromeUtil.getPalindromes(names);
