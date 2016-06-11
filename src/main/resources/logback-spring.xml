@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Logback configuration                                          -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user             -->
+<!--                                                                -->
+<!-- For further documentation, see                                 -->
+<!--    http://logback.qos.ch/documentation.html                    -->
+<!--                                                                -->
+<configuration debug="true" scan="true" scanPeriod="60 seconds">
+	<include resource="org/springframework/boot/logging/logback/default.xml"/>
+	<appender name="LogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/var/log/palindrome.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>/usr/logs/connex_local_agent.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- keep 30 days' worth of history capped at 3GB total size -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+				<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [cla] - [%level] - [%X{logCode:-N/A}] - %logger{5} - %msg%n</Pattern>
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="AsyncLogFile" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="LogFile"/>
+		<includeCallerData>true</includeCallerData>
+		<discardingThreshold>0</discardingThreshold>
+	</appender>
+
+	<root level="DEBUG">
+		<appender-ref ref="AsyncLogFile"/>
+		<!--<appender-ref ref="AsyncMLSAppender"/>-->
+	</root>
+
+	<!-- Third Party Logging START -->
+	<logger name="org.apache" level="WARN" additivity="false">
+		<appender-ref ref="AsyncLogFile"/>
+	</logger>
+	<logger name="org.springframework" level="WARN" additivity="false">
+		<appender-ref ref="AsyncLogFile"/>
+	</logger>
+	<logger name="net.sf" level="WARN" additivity="false">
+		<appender-ref ref="AsyncLogFile"/>
+	</logger>
+	<logger name="ch.qos.logback" level="OFF" additivity="false">
+		<appender-ref ref="AsyncLogFile"/>
+	</logger>
+	<logger name="springfox.documentation" level="OFF" additivity="false">
+		<appender-ref ref="AsyncLogFile"/>
+	</logger>
+
+	<!-- Third Party Logging END -->
+
+</configuration>
